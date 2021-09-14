@@ -18,6 +18,7 @@ const modalStyle = {
   }
 }
 
+// function to dislay the selected tab content inside the modal
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -101,13 +102,16 @@ const valueActionCreator = (tabValue)=>{
   return {type : CHANGE_TAB_VALUE, tabValue,}
 }
 
+// displays the modal
 function Modal({shouldOpen, checkLogin, close}) {
   const [open, setOpen] = useState(shouldOpen);
   const [registered, setRegistered] = useState(false);
 
+  // function to handle toggling of tabs
   const handleChange=(event, newValue)=>{
     dispatch(valueActionCreator(newValue))
   }
+
   const [formContent, dispatch] = useReducer(formReducer, initialState);
   const classes = useStyles();
   const helperTextContent = {
@@ -122,6 +126,7 @@ function Modal({shouldOpen, checkLogin, close}) {
       "Contact Number" : "",
     },
   }
+  // function to validate the user entries
   const handleError = (value, tab, type) =>{
     if(formContent.validate){
       if(!value){
@@ -159,10 +164,12 @@ function Modal({shouldOpen, checkLogin, close}) {
     return false;
   }
   
+  // function to be executed when user click the login/register button
   const handleBtnClick=(e)=>{
     dispatch(formActionCreator(e, VALIDATE))
   }
 
+  // functino to be executed when the user submites the form
   const handleSubmit = (e) =>{
     e.preventDefault();
     const {outerText} = e.target.lastChild;
@@ -181,6 +188,7 @@ function Modal({shouldOpen, checkLogin, close}) {
     }
   }
 
+  // function to handle closing of the modal
   const handleClose=()=>{
     setOpen(false);
     close();

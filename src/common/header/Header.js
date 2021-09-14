@@ -9,14 +9,18 @@ import BookShow from "../../screens/bookshow/BookShow"
 import Modal from "../modals/Modal"
 import { Alert } from '@material-ui/lab';
 
+// The header consisting of the logo and required buttons
 function Header({showLogin, showBookShow}){
   const [login, setLogin] = useState(localStorage.getItem("login"));
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
   const query = useLocation().search;
-  const[alertOn, setAlertOn] = useState(false);
+  const [alertOn, setAlertOn] = useState(false);
 
+  // function to set the text of the "login" button
   const setText=()=>login? "LOG OUT" : "LOGIN";
+
+  // function to handle clicks on the "login" button
   const handleLogin=()=>{
     let localStorageValue = localStorage.getItem("login");
     if(localStorageValue){
@@ -28,10 +32,12 @@ function Header({showLogin, showBookShow}){
     }
   }
 
+  // function to handle closing of the modal
   const close=()=>{
     setModalOpen(false);
   }
 
+  // function to check if user is logged in
   const checkLogin=()=>{
     localStorage.setItem("login", true);
     setLogin(true);
@@ -39,11 +45,14 @@ function Header({showLogin, showBookShow}){
     console.log("Congrats, you logged in ");
   }
 
-  const handleBookShow=()=>login ? history.push(`/bookshow${query}`) : setAlertOn(true);
-  
+  // function to allow user to book shows only if the user is logged in 
+  const handleBookShow=()=>{
+    login ? history.push(`/bookshow${query}`) : setAlertOn(true);
+  }
   return(
     <div className="header">
       <img id="logo-img" src={logo} alt= "logo" />
+      {/* Alert to be displayed when user tries to book shows without logging in  */}
       {alertOn && <Alert id="alert" onClose={()=>setAlertOn(false)} severity="warning">You should log in to book shows</Alert>}
       <div className="btn-group">
         {showBookShow && (
@@ -67,6 +76,7 @@ function Header({showLogin, showBookShow}){
           </Button>
         )}
       </div>
+      {/* Modal for login and regster tabs */}
       {modalOpen && <Modal shouldOpen={modalOpen} checkLogin={checkLogin} close={close} />}
     </div>
   )

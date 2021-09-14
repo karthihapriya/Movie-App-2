@@ -51,9 +51,12 @@ const actionCreator = (component, event)=>{
 
 function MovieFilter({func}){
   const [formContent, dispatchForm] = useReducer(formReducer,initialState);
+
+  //Function to determine the display of the values selected
   const renderInside = (item) =>{
     return formContent[item].length > 1 ? formContent[item].join(", ") : formContent[item];
   }
+  
   let theme = createTheme();
   let titleColor = theme.palette.primary.light;
   let componentMargin = theme.spacing(1);

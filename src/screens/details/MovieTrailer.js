@@ -4,9 +4,10 @@ import YouTube from "react-youtube";
 import moviesData from "../../common/moviesData";
 import "./Details.css";
 
-
+// Displays movie info and trailer
 function MovieTrailer(props) {
   let topMargin = {marginTop: 16};
+  // function to convert date onject to string format
   const dateConverter=dateEntry=>{
     let myDate = new Date(dateEntry);
     return myDate.toDateString();

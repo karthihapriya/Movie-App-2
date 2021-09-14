@@ -12,6 +12,7 @@ function Home(){
   const [releaseDateStart, setReleaseDateStart] = useState("");
   const [releaseDateEnd, setReleaseDateEnd] = useState("");
 
+  // setting the state corresponding to filters set up in the MovieFilter component
   const copyState=(otherState)=>{
     setArtist([...otherState.artist]);
     setGenre([...otherState.genre]);

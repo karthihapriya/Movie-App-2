@@ -4,7 +4,7 @@ import ImageList from "@material-ui/core/ImageList";
 import ImageListItem from '@material-ui/core/ImageListItem';
 import "./Details.css";
 
-
+// Dispays the movie poster
 function MoviePoster(props) {
   return(
     <ImageList rowHeight={450} cols={1}>

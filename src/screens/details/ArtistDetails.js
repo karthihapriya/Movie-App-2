@@ -6,8 +6,10 @@ import ImageList from "@material-ui/core/ImageList";
 import ImageListItem from "@material-ui/core/ImageListItem";
 import ImageListItemBar from "@material-ui/core/ImageListItemBar";
 
+// Displays rating bar and artists details
 function ArtistDetails(props) {
   const [starColor, setStarColor] = useState(["black", "black", "black", "black", "black"])
+  // function to enable rating
   const setColor = (index) =>{
     let newArr = ["black", "black", "black", "black", "black"];
     let i = index;

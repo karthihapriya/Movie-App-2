@@ -3,7 +3,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import "./Details.css";
 
-
+// displays the "Back to Home" link
 function BackToHome(){
   return (
     <Typography style={{cursor: "pointer", width: "max-content"}} 
