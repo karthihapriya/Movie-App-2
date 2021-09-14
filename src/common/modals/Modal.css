@@ -3,3 +3,6 @@ form{
   flex-direction: column;
   justify-content: space-around;
 }
+.success{
+  color : #4caf50;
+}

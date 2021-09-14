@@ -6,14 +6,19 @@ import Button from '@material-ui/core/Button';
 import { Typography } from "@material-ui/core";
 //import { Link } from "react-router-dom";
 //import BookShow from "../../screens/bookshow/BookShow"
+import Modal from "../modals/Modal"
 
 
 function Header({showLogin, showBookShow}){
   const [login, setLogin] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
   // console.log(history)
   const setText=()=>login? "LOG OUT" : "LOGIN";
-  const handleLogin=()=>setLogin(!login);
+  const handleLogin=()=>{
+    setLogin(!login);
+    setModalOpen(!modalOpen);
+  }
   const handleBookShow=()=>login ? history.push("/bookshow") : null;
   
   return(
@@ -40,6 +45,7 @@ function Header({showLogin, showBookShow}){
           </Button>
         )}
       </div>
+      {modalOpen && <Modal shouldOpen={modalOpen} />}
     </div>
   )
 }

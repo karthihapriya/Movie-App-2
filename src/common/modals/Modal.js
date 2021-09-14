@@ -1,5 +1,5 @@
 import { AppBar, Tabs, Tab, Box, Typography, FormControl, TextField, Button } from "@material-ui/core";
-import React, { useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import ReactModal from "react-modal";
 import "./Modal.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,9 +13,6 @@ const useStyles = makeStyles(()=>({
 }))
 
 const modalStyle = {
-  overlay:{
-    backgroundColor : "grey",
-  },
   content :{
     height : "max-content",
     width : "max-content",
@@ -106,37 +103,62 @@ const valueActionCreator = (tabValue)=>{
   return {type : CHANGE_TAB_VALUE, tabValue,}
 }
 
-function Modal() {
+function Modal({shouldOpen}) {
+  // debugger;
+  // console.log(shouldOpen)
+  const [open, setOpen] = useState(shouldOpen);
+  const [registered, setRegistered] = useState(false);
+  
+  // console.log("open", open);
   const handleChange=(event, newValue)=>{
     dispatch(valueActionCreator(newValue))
   }
   const [formContent, dispatch] = useReducer(formReducer, initialState);
   const classes = useStyles();
   const helperTextContent = {
-    Username : "",
-    Password : "",
-    Email : "",
-    "First Name" : "",
-    "Last Name" : "",
-    "Contact Number" : "",
+    login:{
+      Username : "",
+      Password : "",
+    },
+    register:{
+      Email : "",
+      "First Name" : "",
+      "Last Name" : "",
+      "Contact Number" : "",
+    },
   }
-  const handleError = (value, type) =>{
+  const handleError = (value, tab, type) =>{
     if(formContent.validate){
       if(!value){
-        helperTextContent[type] = `${type} required`;
+        helperTextContent[tab][type] = `${type} required`;
         return true;
       }else{
         switch(type){
           case "Email" : {
             let regex = /.+@.+\..+/;
-            if(regex.test(value)){
-              helperTextContent[type] = "Invalid Email Address";
-              return false;
+            if(!regex.test(value) && helperTextContent[tab].hasOwnProperty(type)){
+              helperTextContent[tab][type] = "Invalid Email Address";
+              return true;
             }
-          };
+          }; break;
+          case "Contact Number" : {
+            let regex = /\d{10}/;
+            if(!regex.test(value) && helperTextContent[tab].hasOwnProperty(type)){
+              helperTextContent[tab][type] = "Please enter a valid contact number";
+              return true;
+            }
+          }; break;
+          case "First Name" : 
+          case "Last Name" : {
+            let regex = /[A-Za-z]+/;
+            if(!regex.test(value) && helperTextContent[tab].hasOwnProperty(type)){
+              helperTextContent[tab][type] = "Invalid entry";
+              return true;
+            }
+          }; break;
         }
       }
-      helperTextContent[type] = "";
+      helperTextContent[tab][type] = "";
       return false;
     }
     return false;
@@ -148,11 +170,24 @@ function Modal() {
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    alert("submitted")
+    console.log(e.target.lastChild.outerText)
+    const {outerText} = e.target.lastChild;
+    if(formContent.validate){
+      let tab = outerText.toLowerCase();
+      console.log(tab);
+      console.log(Object.values(helperTextContent[tab]));
+      console.log(Object.values(helperTextContent[tab]).reduce((sum, item)=>sum + item)=== "")
+      console.log(helperTextContent)
+      if(Object.values(helperTextContent[tab]).reduce((sum, item)=>sum + item)=== ""){
+        setRegistered(true);
+      }else{
+        setRegistered(false);
+      }
+    }
   }
 
   return (
-    <ReactModal isOpen={true} style={modalStyle}>
+    <ReactModal isOpen={open} style={modalStyle} onRequestClose={()=>setOpen(false)}>
       <AppBar position="static" color="transparent">
         <Tabs value={formContent.tabValue} onChange={handleChange} aria-label="login/register tab" centered>
           <Tab label="Login" />
@@ -166,8 +201,8 @@ function Modal() {
                 label="Username"
                 value={formContent.username}
                 onChange={(e)=>dispatch(formActionCreator(e, USERNAME))}
-                error={handleError(formContent.username, "Username")}
-                helperText={helperTextContent.Username}
+                error={handleError(formContent.username,"login", "Username")}
+                helperText={helperTextContent.login.Username}
                 type="text"
               />
           </FormControl>
@@ -176,12 +211,12 @@ function Modal() {
                 label="Password"
                 value={formContent.password}
                 onChange={(e)=>dispatch(formActionCreator(e, PASSWORD))}
-                error={handleError(formContent.password, "Password")}
-                helperText={helperTextContent.Password}
+                error={handleError(formContent.password,"login", "Password")}
+                helperText={helperTextContent.login.Password}
                 type="password"
               />
           </FormControl>
-          <Button type="submit" className={classes.root} variant="contained" color="primary">Login</Button>
+          <Button type="submit" className={classes.root} variant="contained" color="primary" onClick={handleBtnClick}>Login</Button>
         </form>
       </TabPanel>
       <TabPanel value={formContent.tabValue} index={1} >
@@ -192,8 +227,8 @@ function Modal() {
               type="text"
               value={formContent.firstName}
               onChange={(e)=>dispatch(formActionCreator(e, FIRSTNAME))}
-              error={handleError(formContent.firstName, "First Name" )}
-              helperText={helperTextContent["First Name"]}
+              error={handleError(formContent.firstName,"register", "First Name" )}
+              helperText={helperTextContent.register["First Name"]}
             />
           </FormControl>
           <FormControl>
@@ -202,8 +237,8 @@ function Modal() {
               type="text"
               value={formContent.lastName}
               onChange={(e)=>dispatch(formActionCreator(e, LASTNAME))}
-              error={handleError(formContent.lastName, "Last Name")}
-              helperText={helperTextContent["Last Name"]}
+              error={handleError(formContent.lastName,"register", "Last Name")}
+              helperText={helperTextContent.register["Last Name"]}
             />
           </FormControl>
           <FormControl>
@@ -212,8 +247,8 @@ function Modal() {
               type="email"
               value={formContent.email}
               onChange={(e)=>dispatch(formActionCreator(e, EMAIL))}
-              error={handleError(formContent.email, "Email")}
-              helperText={helperTextContent.Email}
+              error={handleError(formContent.email,"register", "Email")}
+              helperText={helperTextContent.register.Email}
             />
           </FormControl>
           <FormControl>
@@ -222,8 +257,8 @@ function Modal() {
               type="password"
               value={formContent.regPassword}
               onChange={(e)=>dispatch(formActionCreator(e, REGPASSWORD))}
-              error={handleError(formContent.regPassword, "Password")}
-              helperText={helperTextContent.Password}
+              error={handleError(formContent.regPassword,"register", "Password")}
+              helperText={helperTextContent.register.Password}
             />
           </FormControl>
           <FormControl>
@@ -231,10 +266,11 @@ function Modal() {
               label="Contact No"
               value={formContent.number}
               onChange={(e)=>dispatch(formActionCreator(e, NUMBER))}
-              error={handleError(formContent.number, "Contact Number")}
-              helperText={helperTextContent["Contact Number"]}
+              error={handleError(formContent.number,"register", "Contact Number")}
+              helperText={helperTextContent.register["Contact Number"]}
             />
           </FormControl>
+          {registered && <Typography className="success">Registration successful. Please Login</Typography>}
           <Button type="submit" className={classes.root} variant="contained" color="primary" onClick={handleBtnClick}>Register</Button>
         </form>
       </TabPanel>
