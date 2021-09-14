@@ -40,4 +40,5 @@ html, body{
 }
 .rate-star:hover{
   color: yellow;
+  cursor: pointer;
 }

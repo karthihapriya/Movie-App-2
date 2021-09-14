@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import "./Details.css";
 
 
-const BackToHome = () =>{
+function BackToHome(){
   return (
     <Typography style={{cursor: "pointer", width: "max-content"}} 
       gutterBottom={true}

@@ -5,63 +5,54 @@ import moviesData from "../../common/moviesData";
 import "./Details.css";
 
 
-class MovieTrailer extends React.Component{
-  topMargin = {marginTop: 16};
-  dateConverter=dateEntry=>{
+function MovieTrailer(props) {
+  let topMargin = {marginTop: 16};
+  const dateConverter=dateEntry=>{
     let myDate = new Date(dateEntry);
     return myDate.toDateString();
   }
-  ready = (event) => {
-    // access to player in all event handlers via event.target
+  const ready = (event) => {
     event.target.pauseVideo();
   }
-  render(){
-    return(
-      <>
-        <Typography
-          variant="h6"
-          component="h2"
-          color="primary"
-        >
-          {moviesData[this.props.movieId].title.toLocaleUpperCase()}
-        </Typography>
-        {/* <br /> */}
-        <Typography>
-          <strong>Genre: </strong>
-          {moviesData[this.props.movieId].genres.join(", ")} 
-        </Typography>
-        {/* <br /> */}
-        <Typography>
-          <strong>Duration: </strong>
-          {moviesData[this.props.movieId].duration + " min"} 
-        </Typography>
-        {/* <br /> */}
-        <Typography>
-          <strong>Release Date: </strong>
-          {this.dateConverter(moviesData[this.props.movieId].release_date)} 
-        </Typography>
-        {/* <br /> */}
-        <Typography>
-          <strong>Rating: </strong>
-          {moviesData[this.props.movieId].critics_rating} 
-        </Typography>
-        {/* <br /> */}
-        <Typography style={this.topMargin}>
-          <strong>Plot: </strong>
-          <a href={moviesData[this.props.movieId].wiki_url}>[Wiki Link]</a>
-          {moviesData[this.props.movieId].storyline} 
-        </Typography>
-        {/* <br /> */}
-        <Typography style={this.topMargin}>
-          <strong>Trailer: </strong>
-        </Typography>
-        <YouTube className="trailer"
-          videoId={moviesData[this.props.movieId].trailer_url.split("?v=")[1]}
-          onReady={this.ready}
-          id="sY1S34973zA"
-        />
-      </>
-    )
-  }
+  return(
+    <>
+      <Typography
+        variant="h6"
+        component="h2"
+        color="primary"
+      >
+        {moviesData[props.movieId].title.toLocaleUpperCase()}
+      </Typography>
+      <Typography>
+        <strong>Genre: </strong>
+        {moviesData[props.movieId].genres.join(", ")} 
+      </Typography>
+      <Typography>
+        <strong>Duration: </strong>
+        {moviesData[props.movieId].duration + " min"} 
+      </Typography>
+      <Typography>
+        <strong>Release Date: </strong>
+        {dateConverter(moviesData[props.movieId].release_date)} 
+      </Typography>
+      <Typography>
+        <strong>Rating: </strong>
+        {moviesData[props.movieId].critics_rating} 
+      </Typography>
+      <Typography style={topMargin}>
+        <strong>Plot: </strong>
+        <a href={moviesData[props.movieId].wiki_url}>[Wiki Link]</a>
+        {moviesData[props.movieId].storyline} 
+      </Typography>
+      <Typography style={topMargin}>
+        <strong>Trailer: </strong>
+      </Typography>
+      <YouTube className="trailer"
+        videoId={moviesData[props.movieId].trailer_url.split("?v=")[1]}
+        onReady={ready}
+        id="sY1S34973zA"
+      />
+    </>
+  )
 }
 export default MovieTrailer;
