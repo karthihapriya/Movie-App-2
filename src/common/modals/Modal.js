@@ -7,9 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(()=>({
   root :{
     marginTop : "10%",
-    // display : "none",
   }
-
 }))
 
 const modalStyle = {
@@ -103,13 +101,10 @@ const valueActionCreator = (tabValue)=>{
   return {type : CHANGE_TAB_VALUE, tabValue,}
 }
 
-function Modal({shouldOpen}) {
-  // debugger;
-  // console.log(shouldOpen)
+function Modal({shouldOpen, checkLogin, close}) {
   const [open, setOpen] = useState(shouldOpen);
   const [registered, setRegistered] = useState(false);
-  
-  // console.log("open", open);
+
   const handleChange=(event, newValue)=>{
     dispatch(valueActionCreator(newValue))
   }
@@ -170,24 +165,29 @@ function Modal({shouldOpen}) {
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    console.log(e.target.lastChild.outerText)
     const {outerText} = e.target.lastChild;
     if(formContent.validate){
       let tab = outerText.toLowerCase();
-      console.log(tab);
-      console.log(Object.values(helperTextContent[tab]));
-      console.log(Object.values(helperTextContent[tab]).reduce((sum, item)=>sum + item)=== "")
-      console.log(helperTextContent)
-      if(Object.values(helperTextContent[tab]).reduce((sum, item)=>sum + item)=== ""){
-        setRegistered(true);
+      if(Object.values(helperTextContent[tab]).reduce((sum, item)=>sum + item)=== "" ){
+        if(tab === "register"){
+          setRegistered(true);
+        }else{
+          checkLogin();
+          alert("Succesfully logged in");
+        }
       }else{
         setRegistered(false);
       }
     }
   }
 
+  const handleClose=()=>{
+    setOpen(false);
+    close();
+  }
+
   return (
-    <ReactModal isOpen={open} style={modalStyle} onRequestClose={()=>setOpen(false)}>
+    <ReactModal isOpen={open} style={modalStyle} onRequestClose={()=>handleClose()} ariaHideApp={false} >
       <AppBar position="static" color="transparent">
         <Tabs value={formContent.tabValue} onChange={handleChange} aria-label="login/register tab" centered>
           <Tab label="Login" />

@@ -8,17 +8,34 @@ import { Typography } from "@material-ui/core";
 //import BookShow from "../../screens/bookshow/BookShow"
 import Modal from "../modals/Modal"
 
-
 function Header({showLogin, showBookShow}){
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(localStorage.getItem("login"));
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
-  // console.log(history)
+  
   const setText=()=>login? "LOG OUT" : "LOGIN";
   const handleLogin=()=>{
-    setLogin(!login);
-    setModalOpen(!modalOpen);
+    let localStorageValue = localStorage.getItem("login");
+    if(localStorageValue){
+      localStorage.removeItem("login");
+      setLogin(false)
+      setModalOpen(false);
+    }else{
+      setModalOpen(true);
+    }
   }
+
+  const close=()=>{
+    setModalOpen(false);
+  }
+
+  const checkLogin=()=>{
+    localStorage.setItem("login", true);
+    setLogin(true);
+    setModalOpen(false);
+    console.log("Congrats, you logged in ");
+  }
+
   const handleBookShow=()=>login ? history.push("/bookshow") : null;
   
   return(
@@ -45,7 +62,7 @@ function Header({showLogin, showBookShow}){
           </Button>
         )}
       </div>
-      {modalOpen && <Modal shouldOpen={modalOpen} />}
+      {modalOpen && <Modal shouldOpen={modalOpen} checkLogin={checkLogin} close={close} />}
     </div>
   )
 }
