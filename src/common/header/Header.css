@@ -41,3 +41,8 @@
 #bookshow-btn{
   margin-right: 4em;
 }
+
+#alert{
+  position: relative;
+  margin : auto;
+}

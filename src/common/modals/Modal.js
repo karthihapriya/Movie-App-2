@@ -137,7 +137,7 @@ function Modal({shouldOpen, checkLogin, close}) {
             }
           }; break;
           case "Contact Number" : {
-            let regex = /\d{10}/;
+            let regex = /^\d{10}$/;
             if(!regex.test(value) && helperTextContent[tab].hasOwnProperty(type)){
               helperTextContent[tab][type] = "Please enter a valid contact number";
               return true;

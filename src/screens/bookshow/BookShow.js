@@ -11,7 +11,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const BookShow = (props) => {
   const [location, setLocation] = useState("");
@@ -32,6 +32,8 @@ const BookShow = (props) => {
   const [showDates, setShowDates] = useState([]);
   const [originalShows, setOriginalShows] = useState([]);
   const [showId, setShowId] = useState("");
+  let query = useLocation().search;
+  
 
   useEffect(() => {
     let dataShows = null;
@@ -190,13 +192,13 @@ const BookShow = (props) => {
       },
     });
   };
-
   return (
     <div>
       <Header baseUrl={props.baseUrl} />
       <div className="bookShow">
         <Typography className="back">
-          <Link to={"/movie/" + props.match.params.id}>
+          {/* <Link to={"/movie/" + props.match.params.id}> */}
+          <Link to={`/detail${query}`}>
             &#60; Back to Movie Details
           </Link>
         </Typography>

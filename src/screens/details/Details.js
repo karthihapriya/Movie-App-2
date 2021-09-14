@@ -5,7 +5,7 @@ import BackToHome from "./BackToHome";
 import MoviePoster from "./MoviePoster";
 import MovieTrailer from "./MovieTrailer";
 import ArtistDetails from "./ArtistDetails";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 
 function Details(){
   const location = useLocation();

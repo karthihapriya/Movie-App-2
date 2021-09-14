@@ -7,7 +7,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
 import 'typeface-roboto';
 import BookShow from './screens/bookshow/BookShow';
-//import Modal from "./common/modals/Modal"
+import Modal from "./common/modals/Modal"
 
 
 ReactDOM.render(
