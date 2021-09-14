@@ -6,16 +6,16 @@ import './index.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
 import 'typeface-roboto';
+import BookShow from './screens/bookshow/BookShow';
 
 
 ReactDOM.render(
     <BrowserRouter>
-      {/* <Home /> */}
-      {/* <Details /> */}
       <Switch>
-        <Route path="/" exact component={Home}/>
-        <Route path="/detail" component={Details}/>
-        <Route component={NotFound}/>
+        <Route path="/" exact component={Home} />
+        <Route path="/detail" component={Details} />
+        <Route path="/bookshow" component={BookShow} />
+        <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
 ,

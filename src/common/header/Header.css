@@ -28,12 +28,16 @@
   }
 }
 
-.btn-group{
+/* .btn-group{
   display: flex;
   justify-content: space-between;
   width: 20%;
-}
+} */
 
 .btn:hover{
   cursor: pointer;
+}
+
+#bookshow-btn{
+  margin-right: 4em;
 }
