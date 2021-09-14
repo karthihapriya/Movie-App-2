@@ -5,9 +5,12 @@ import BackToHome from "./BackToHome";
 import MoviePoster from "./MoviePoster";
 import MovieTrailer from "./MovieTrailer";
 import ArtistDetails from "./ArtistDetails";
+import { useLocation, useParams } from "react-router";
 
-function Details(props){
-  const [movieId, setMovieId] = useState(parseInt(props.location.search.split("?id=")[1]))
+function Details(){
+  const location = useLocation();
+
+  const [movieId, setMovieId] = useState(parseInt(location.search.split("?id=")[1]))
   return (
     <div>
       <Header showLogin={true} showBookShow={true} />
